@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PJT 02 — 주가 데이터 분석 | FinHub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#6366F1;--dark:#08091A;--border:#E8EAF0;--text-1:#0D0F1E;--text-2:#4A5068;}
+    body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#fff;color:var(--text-1);-webkit-font-smoothing:antialiased;}
+    a{text-decoration:none;color:inherit;}
+    .nav{position:sticky;top:0;z-index:100;background:rgba(8,9,26,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);height:64px;display:flex;align-items:center;}
+    .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;gap:8px;}
+    .logo{font-size:19px;font-weight:900;color:#fff;display:flex;align-items:center;gap:7px;margin-right:20px;}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);display:inline-block;}
+    .nav-links{display:flex;gap:4px;flex:1;}
+    .nav-link{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:rgba(255,255,255,.4);transition:.15s;}
+    .nav-link:hover{background:rgba(255,255,255,.07);color:#fff;}
+    .nav-link.active{background:rgba(99,102,241,.2);color:#A5B4FC;}
+    .nav-back{margin-left:auto;font-size:13px;font-weight:600;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;transition:.15s;}
+    .nav-back:hover{background:rgba(255,255,255,.06);color:#fff;}
+    .container{max-width:1140px;margin:0 auto;padding:0 24px;position:relative;}
+    .hero{background:var(--dark);padding:80px 0 72px;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(99,102,241,.18) 0%,transparent 70%);}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:60px 60px;}
+    .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25);color:#A5B4FC;border-radius:99px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;}
+    .badge span{width:6px;height:6px;border-radius:50%;background:var(--primary);}
+    .orb{width:100px;height:100px;position:relative;margin-bottom:28px;}
+    .orb-ring{position:absolute;inset:0;border-radius:40% 60% 55% 45%;background:conic-gradient(from 90deg,#6366F1,#3B82F6,#A855F7,#6366F1);}
+    .orb-inner{position:absolute;inset:4px;border-radius:37% 57% 52% 42%;background:var(--dark);display:flex;align-items:center;justify-content:center;}
+    .section{padding:72px 0;}
+    .section-bg{background:#F7F8FC;}
+    .sec-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:10px;}
+    .sec-h{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1.2;color:var(--text-1);}
+    .sec-sub{font-size:15px;color:var(--text-2);margin-top:10px;line-height:1.75;}
+    .req-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;}
+    .req-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;}
+    .req-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
+    .req-title{font-size:15px;font-weight:800;margin-bottom:6px;}
+    .req-desc{font-size:13px;color:var(--text-2);line-height:1.65;}
+    .impl-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+    .step{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;}
+    .step-num{min-width:32px;height:32px;border-radius:50%;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#A5B4FC;}
+    .step-title{font-size:14px;font-weight:700;margin-bottom:3px;}
+    .step-desc{font-size:13px;color:var(--text-2);line-height:1.6;}
+    .mockup-frame{background:var(--dark);border-radius:16px;border:1px solid rgba(255,255,255,.06);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.3);}
+    .mockup-bar{background:rgba(255,255,255,.04);padding:10px 16px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05);}
+    .dot{width:9px;height:9px;border-radius:50%;}
+    .url-bar{flex:1;background:rgba(255,255,255,.05);border-radius:5px;height:22px;margin:0 10px;display:flex;align-items:center;padding:0 10px;}
+    .url-text{font-size:10px;color:rgba(255,255,255,.3);font-family:monospace;}
+    .mockup-body{padding:28px;}
+    .ind-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+    .ind-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px;}
+    .ind-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+    .ind-val{font-size:18px;font-weight:900;color:#fff;letter-spacing:-1px;}
+    .ind-sub{font-size:10px;margin-top:2px;}
+    footer{background:var(--dark);color:rgba(255,255,255,.3);padding:40px 0;font-size:12px;}
+    .f-inner{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .f-logo{font-size:18px;font-weight:900;color:#fff;display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+    .pjt-nav{display:flex;gap:6px;margin-top:10px;}
+    .pjt-btn{padding:5px 14px;border-radius:99px;font-size:12px;font-weight:700;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);transition:.15s;}
+    .pjt-btn:hover{border-color:rgba(255,255,255,.25);color:#fff;}
+    .pjt-btn.cur{background:rgba(99,102,241,.2);border-color:rgba(99,102,241,.4);color:#A5B4FC;}
+    @media(max-width:768px){.req-grid,.impl-grid{grid-template-columns:1fr;}.nav-links{display:none;}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo"><span class="logo-dot"></span>FinHub</a>
+    <div class="nav-links">
+      <a href="../pjt01/index.html" class="nav-link">PJT 01</a>
+      <a href="./index.html" class="nav-link active">PJT 02</a>
+      <a href="../pjt03/index.html" class="nav-link">PJT 03</a>
+      <a href="../pjt04/index.html" class="nav-link">PJT 04</a>
+      <a href="../pjt05/index.html" class="nav-link">PJT 05</a>
+    </div>
+    <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> 돌아가기</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:48px;flex-wrap:wrap;">
+      <div class="orb">
+        <div class="orb-ring"></div>
+        <div class="orb-inner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#3B82F6"/></linearGradient></defs><polyline points="4 18 9 11 13 14 19 6" stroke="url(#g2)"/><line x1="4" y1="20" x2="20" y2="20" stroke="url(#g2)"/></svg>
+        </div>
+      </div>
+      <div style="flex:1;min-width:280px;">
+        <div class="badge"><span></span>PJT 02 · 2026.01.30</div>
+        <h1 style="font-size:44px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1.1;margin-bottom:16px;">넷플릭스 주가<br>데이터 분석</h1>
+        <p style="font-size:16px;color:rgba(255,255,255,.45);line-height:1.75;max-width:520px;">Pandas와 Matplotlib으로 Netflix 주가 시계열 데이터를 분석·시각화하고 AI 예측까지 확장하는 데이터 사이언스 프로젝트</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-label">과제 브리핑</div>
+    <h2 class="sec-h">학습 목표</h2>
+    <p class="sec-sub">데이터 분석 전체 흐름 이해 · 수집·전처리·시각화·예측</p>
+    <div class="req-grid">
+      <div class="req-card"><div class="req-num">F201 · 필수</div><div class="req-title">데이터 수집 및 전처리</div><div class="req-desc">Kaggle에서 Netflix 주가 CSV를 다운로드하고 Pandas로 결측치 처리, 타입 변환 등 전처리를 수행한다.</div></div>
+      <div class="req-card"><div class="req-num">F202 · 필수</div><div class="req-title">시계열 시각화</div><div class="req-desc">Matplotlib으로 종가 추이, 이동평균선, 거래량 등을 시각화하고 직관적으로 표현한다.</div></div>
+      <div class="req-card"><div class="req-num">F203 · 심화</div><div class="req-title">AI 기반 가격 예측</div><div class="req-desc">생성형 AI와 결합해 주가 트렌드를 분석하거나 ML 모델로 미래 가격을 예측한다.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-bg">
+  <div class="container">
+    <div class="impl-grid">
+      <div>
+        <div class="sec-label">FinHub 적용</div>
+        <h2 class="sec-h">stocks 앱에서<br>이렇게 구현했어요</h2>
+        <p class="sec-sub" style="margin-bottom:28px;">PJT02의 시계열 분석을 yfinance + 자체 strategy.py 엔진으로 확장해 실시간 기술 분석과 매매 신호를 제공합니다.</p>
+        <div class="step"><div class="step-num">1</div><div><div class="step-title">yfinance OHLCV 수집</div><div class="step-desc">yf.download()로 원하는 종목·기간 OHLCV 데이터를 실시간 수집</div></div></div>
+        <div class="step"><div class="step-num">2</div><div><div class="step-title">기술 지표 계산</div><div class="step-desc">strategy.py에서 EMA 10/20/50, RSI, MACD, ADX, 볼린저밴드를 직접 구현</div></div></div>
+        <div class="step"><div class="step-num">3</div><div><div class="step-title">LONG/SHORT 신호 + 백테스트</div><div class="step-desc">EMA 크로스오버 기반 신호 생성 및 수익률·승률 백테스트 결과 제공</div></div></div>
+        <div class="step"><div class="step-num">4</div><div><div class="step-title">Plotly.js 인터랙티브 차트</div><div class="step-desc">캔들스틱 + RSI + MACD를 인터랙티브 차트로 시각화</div></div></div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar"><div class="dot" style="background:#FF5F57;"></div><div class="dot" style="background:#FFBD2E;"></div><div class="dot" style="background:#28C840;"></div><div class="url-bar"><span class="url-text">localhost:8000/stocks/AAPL/</span></div></div>
+        <div class="mockup-body">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <div><div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">주가 분석</div><div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px;">AAPL — Apple Inc.</div></div>
+            <div style="margin-left:auto;background:rgba(16,185,129,.15);color:#10B981;padding:8px 18px;border-radius:10px;font-size:16px;font-weight:900;">📈 LONG</div>
+          </div>
+          <div class="ind-grid">
+            <div class="ind-card"><div class="ind-label">RSI (14)</div><div class="ind-val" style="color:#10B981;">62.4</div><div class="ind-sub" style="color:#10B981;">과매도 없음</div></div>
+            <div class="ind-card"><div class="ind-label">MACD</div><div class="ind-val" style="color:#10B981;">+2.31</div><div class="ind-sub" style="color:#10B981;">골든크로스</div></div>
+            <div class="ind-card"><div class="ind-label">ADX</div><div class="ind-val">38.7</div><div class="ind-sub" style="color:rgba(255,255,255,.35);">강한 추세</div></div>
+            <div class="ind-card"><div class="ind-label">EMA 10</div><div class="ind-val">$186</div><div class="ind-sub" style="color:rgba(255,255,255,.35);">단기선</div></div>
+            <div class="ind-card"><div class="ind-label">EMA 20</div><div class="ind-val">$183</div><div class="ind-sub" style="color:rgba(255,255,255,.35);">중기선</div></div>
+            <div class="ind-card"><div class="ind-label">볼린저</div><div class="ind-val" style="font-size:14px;">중간</div><div class="ind-sub" style="color:rgba(255,255,255,.35);">밴드 내부</div></div>
+          </div>
+          <div style="margin-top:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px;">
+            <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">백테스트 (EMA 크로스오버)</div>
+            <div style="display:flex;gap:20px;">
+              <div><div style="font-size:16px;font-weight:900;color:#10B981;">+18.4%</div><div style="font-size:9px;color:rgba(255,255,255,.3);">총 수익률</div></div>
+              <div><div style="font-size:16px;font-weight:900;color:#fff;">24회</div><div style="font-size:9px;color:rgba(255,255,255,.3);">총 거래</div></div>
+              <div><div style="font-size:16px;font-weight:900;color:#A5B4FC;">62.5%</div><div style="font-size:9px;color:rgba(255,255,255,.3);">승률</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-inner">
+    <div><div class="f-logo"><span class="logo-dot"></span>FinHub</div><div>© 2026 FinHub · 교육용 프로젝트</div></div>
+    <div><div style="font-size:11px;color:rgba(255,255,255,.2);margin-bottom:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;">다른 프로젝트</div><div class="pjt-nav"><a href="../pjt01/index.html" class="pjt-btn">PJT 01</a><a href="./index.html" class="pjt-btn cur">PJT 02</a><a href="../pjt03/index.html" class="pjt-btn">PJT 03</a><a href="../pjt04/index.html" class="pjt-btn">PJT 

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PJT 03 — 반응형 프로필 | FinHub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#EC4899;--dark:#08091A;--border:#E8EAF0;--text-1:#0D0F1E;--text-2:#4A5068;}
+    body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#fff;color:var(--text-1);-webkit-font-smoothing:antialiased;}
+    a{text-decoration:none;color:inherit;}
+    .nav{position:sticky;top:0;z-index:100;background:rgba(8,9,26,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);height:64px;display:flex;align-items:center;}
+    .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;gap:8px;}
+    .logo{font-size:19px;font-weight:900;color:#fff;display:flex;align-items:center;gap:7px;margin-right:20px;}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);display:inline-block;}
+    .nav-links{display:flex;gap:4px;flex:1;}
+    .nav-link{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:rgba(255,255,255,.4);transition:.15s;}
+    .nav-link:hover{background:rgba(255,255,255,.07);color:#fff;}
+    .nav-link.active{background:rgba(236,72,153,.2);color:#F9A8D4;}
+    .nav-back{margin-left:auto;font-size:13px;font-weight:600;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;transition:.15s;}
+    .nav-back:hover{background:rgba(255,255,255,.06);color:#fff;}
+    .container{max-width:1140px;margin:0 auto;padding:0 24px;position:relative;}
+    .hero{background:var(--dark);padding:80px 0 72px;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(236,72,153,.18) 0%,transparent 70%);}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:60px 60px;}
+    .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(236,72,153,.12);border:1px solid rgba(236,72,153,.25);color:#F9A8D4;border-radius:99px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;}
+    .badge span{width:6px;height:6px;border-radius:50%;background:var(--primary);}
+    .orb{width:100px;height:100px;position:relative;margin-bottom:28px;}
+    .orb-ring{position:absolute;inset:0;border-radius:60% 40% 45% 55%;background:conic-gradient(from 180deg,#EC4899,#F59E0B,#A855F7,#EC4899);}
+    .orb-inner{position:absolute;inset:4px;border-radius:57% 37% 42% 52%;background:var(--dark);display:flex;align-items:center;justify-content:center;}
+    .section{padding:72px 0;} .section-bg{background:#F7F8FC;}
+    .sec-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:10px;}
+    .sec-h{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1.2;}
+    .sec-sub{font-size:15px;color:var(--text-2);margin-top:10px;line-height:1.75;}
+    .req-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;}
+    .req-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;}
+    .req-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
+    .req-title{font-size:15px;font-weight:800;margin-bottom:6px;} .req-desc{font-size:13px;color:var(--text-2);line-height:1.65;}
+    .impl-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+    .step{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;}
+    .step-num{min-width:32px;height:32px;border-radius:50%;background:rgba(236,72,153,.15);border:1px solid rgba(236,72,153,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#F9A8D4;}
+    .step-title{font-size:14px;font-weight:700;margin-bottom:3px;} .step-desc{font-size:13px;color:var(--text-2);line-height:1.6;}
+    .mockup-frame{background:var(--dark);border-radius:16px;border:1px solid rgba(255,255,255,.06);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.3);}
+    .mockup-bar{background:rgba(255,255,255,.04);padding:10px 16px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05);}
+    .dot{width:9px;height:9px;border-radius:50%;}
+    .url-bar{flex:1;background:rgba(255,255,255,.05);border-radius:5px;height:22px;margin:0 10px;display:flex;align-items:center;padding:0 10px;}
+    .url-text{font-size:10px;color:rgba(255,255,255,.3);font-family:monospace;}
+    .mockup-body{padding:28px;}
+    .profile-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;}
+    footer{background:var(--dark);color:rgba(255,255,255,.3);padding:40px 0;font-size:12px;}
+    .f-inner{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .f-logo{font-size:18px;font-weight:900;color:#fff;display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+    .pjt-nav{display:flex;gap:6px;margin-top:10px;}
+    .pjt-btn{padding:5px 14px;border-radius:99px;font-size:12px;font-weight:700;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);transition:.15s;}
+    .pjt-btn:hover{border-color:rgba(255,255,255,.25);color:#fff;}
+    .pjt-btn.cur{background:rgba(236,72,153,.2);border-color:rgba(236,72,153,.4);color:#F9A8D4;}
+    @media(max-width:768px){.req-grid,.impl-grid{grid-template-columns:1fr;}.nav-links{display:none;}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo"><span class="logo-dot"></span>FinHub</a>
+    <div class="nav-links">
+      <a href="../pjt01/index.html" class="nav-link">PJT 01</a>
+      <a href="../pjt02/index.html" class="nav-link">PJT 02</a>
+      <a href="./index.html" class="nav-link active">PJT 03</a>
+      <a href="../pjt04/index.html" class="nav-link">PJT 04</a>
+      <a href="../pjt05/index.html" class="nav-link">PJT 05</a>
+    </div>
+    <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> 돌아가기</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:48px;flex-wrap:wrap;">
+      <div class="orb"><div class="orb-ring"></div><div class="orb-inner"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#EC4899"/><stop offset="1" stop-color="#F59E0B"/></linearGradient></defs><circle cx="12" cy="8" r="3" stroke="url(#g3)"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="url(#g3)"/></svg></div></div>
+      <div style="flex:1;min-width:280px;">
+        <div class="badge"><span></span>PJT 03 · 2026.03.06</div>
+        <h1 style="font-size:44px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1.1;margin-bottom:16px;">반응형 Profile<br>페이지 구현</h1>
+        <p style="font-size:16px;color:rgba(255,255,255,.45);line-height:1.75;max-width:520px;">HTML, CSS, Bootstrap5로 투자 성향·포트폴리오·프로필을 담은 반응형 웹 페이지를 설계하고 구현하는 프로젝트</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-label">과제 브리핑</div>
+    <h2 class="sec-h">학습 목표</h2>
+    <p class="sec-sub">HTML/CSS 동작 원리 · Bootstrap5 그리드 · Media Query 반응형 디자인</p>
+    <div class="req-grid">
+      <div class="req-card"><div class="req-num">F301 · 필수</div><div class="req-title">프로필 정보 출력</div><div class="req-desc">프로필 사진, 자기소개, 투자 성향을 좌우 배치로 출력하고 수정 가능한 UI 요소로 구성한다.</div></div>
+      <div class="req-card"><div class="req-num">F302 · 필수</div><div class="req-title">회원 정보 출력</div><div class="req-desc">회원번호, ID, Email, Nickname, 나이, 자산·연봉 등 추가 정보를 수정 가능하게 출력한다.</div></div>
+      <div class="req-card"><div class="req-num">F303-305 · 필수</div><div class="req-title">네비게이션 + 반응형</div><div class="req-desc">다른 페이지로 이동 가능한 네비게이션 바와 Bootstrap + Media Query 반응형 레이아웃을 구현한다.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-bg">
+  <div class="container">
+    <div class="impl-grid">
+      <div>
+        <div class="sec-label">FinHub 적용</div>
+        <h2 class="sec-h">accounts 앱에서<br>이렇게 구현했어요</h2>
+        <p class="sec-sub" style="margin-bottom:28px;">PJT03의 프로필 페이지를 Django AbstractUser + ImageField로 확장해 투자 성향, 포트폴리오, 프로필 이미지를 DB와 연동합니다.</p>
+        <div class="step"><div class="step-num">1</div><div><div class="step-title">커스텀 유저 모델</div><div class="step-desc">AbstractUser 상속 — nickname, age, assets, salary, investment_style, profile_image 필드 추가</div></div></div>
+        <div class="step"><div class="step-num">2</div><div><div class="step-title">프로필 편집 폼</div><div class="step-desc">CustomUserChangeForm으로 이미지 업로드 포함 프로필 수정 구현</div></div></div>
+        <div class="step"><div class="step-num">3</div><div><div class="step-title">반응형 레이아웃</div><div class="step-desc">Bootstrap5 그리드 + 커스텀 CSS로 모바일-데스크톱 반응형 프로필 UI 구성</div></div></div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar"><div class="dot" style="background:#FF5F57;"></div><div class="dot" style="background:#FFBD2E;"></div><div class="dot" style="background:#28C840;"></div><div class="url-bar"><span class="url-text">localhost:8000/accounts/profile/</span></div></div>
+        <div class="mockup-body">
+          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">투자 프로필</div>
+          <div class="profile-card" style="margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+              <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#EC4899,#F59E0B);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;">H</div>
+              <div><div style="font-size:15px;font-weight:800;color:#fff;">Hye</div><div style="font-size:11px;color:rgba(255,255,255,.35);">@hwlee154 · 성장형 투자자</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:3px;">투자 성향</div><div style="font-size:12px;font-weight:700;color:#F9A8D4;">성장형</div></div>
+              <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:3px;">저축 성향</div><div style="font-size:12px;font-weight:700;color:#F9A8D4;">공격적</div></div>
+              <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:3px;">최애 은행</div><div style="font-size:12px;font-weight:700;color:#fff;">토스뱅크</div></div>
+              <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:3px;">관심 종목</div><div style="font-size:12px;font-weight:700;color:#fff;">AAPL, BTC</div></div>
+            </div>
+          </div>
+          <div style="text-align:right;"><span style="background:rgba(236,72,153,.2);color:#F9A8D4;border:1px solid rgba(236,72,153,.3);border-radius:99px;padding:5px 14px;font-size:11px;font-weight:700;">프로필 편집 →</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-inner">
+    <div><div class="f-logo"><span class="logo-dot"></span>FinHub</div><div>© 2026 FinHub · 교육용 프로젝트</div></div>
+    <div><div style="font-size:11px;color:rgba(255,255,255,.2);margin-bottom:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;">다른 프로젝트</div><div class="pjt-nav"><a href="../pjt01/index.html" class="pjt-btn">PJT 01</a><a href="../pjt02/index.html" class="pjt-btn">PJT 02</a><a href="./index.html" class="pjt-btn cur">PJT 03</a><a href="../pjt04/index.html" class="pjt-btn">PJT

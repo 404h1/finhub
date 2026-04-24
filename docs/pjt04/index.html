@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PJT 04 — 금융 자산 토론 게시판 | FinHub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#10B981;--dark:#08091A;--border:#E8EAF0;--text-1:#0D0F1E;--text-2:#4A5068;}
+    body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#fff;color:var(--text-1);-webkit-font-smoothing:antialiased;}
+    a{text-decoration:none;color:inherit;}
+    .nav{position:sticky;top:0;z-index:100;background:rgba(8,9,26,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);height:64px;display:flex;align-items:center;}
+    .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;gap:8px;}
+    .logo{font-size:19px;font-weight:900;color:#fff;display:flex;align-items:center;gap:7px;margin-right:20px;}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);display:inline-block;}
+    .nav-links{display:flex;gap:4px;flex:1;}
+    .nav-link{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:rgba(255,255,255,.4);transition:.15s;}
+    .nav-link:hover{background:rgba(255,255,255,.07);color:#fff;}
+    .nav-link.active{background:rgba(16,185,129,.2);color:#6EE7B7;}
+    .nav-back{margin-left:auto;font-size:13px;font-weight:600;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;transition:.15s;}
+    .nav-back:hover{background:rgba(255,255,255,.06);color:#fff;}
+    .container{max-width:1140px;margin:0 auto;padding:0 24px;position:relative;}
+    .hero{background:var(--dark);padding:80px 0 72px;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(16,185,129,.15) 0%,transparent 70%);}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:60px 60px;}
+    .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);color:#6EE7B7;border-radius:99px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;}
+    .badge span{width:6px;height:6px;border-radius:50%;background:var(--primary);}
+    .orb{width:100px;height:100px;position:relative;margin-bottom:28px;}
+    .orb-ring{position:absolute;inset:0;border-radius:50% 50% 35% 65%;background:conic-gradient(from 270deg,#10B981,#3B82F6,#6366F1,#10B981);}
+    .orb-inner{position:absolute;inset:4px;border-radius:47% 47% 32% 62%;background:var(--dark);display:flex;align-items:center;justify-content:center;}
+    .section{padding:72px 0;} .section-bg{background:#F7F8FC;}
+    .sec-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:10px;}
+    .sec-h{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1.2;}
+    .sec-sub{font-size:15px;color:var(--text-2);margin-top:10px;line-height:1.75;}
+    .req-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px;}
+    .req-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;}
+    .req-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
+    .req-title{font-size:14px;font-weight:800;margin-bottom:6px;} .req-desc{font-size:12px;color:var(--text-2);line-height:1.65;}
+    .impl-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+    .step{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;}
+    .step-num{min-width:32px;height:32px;border-radius:50%;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#6EE7B7;}
+    .step-title{font-size:14px;font-weight:700;margin-bottom:3px;} .step-desc{font-size:13px;color:var(--text-2);line-height:1.6;}
+    .mockup-frame{background:var(--dark);border-radius:16px;border:1px solid rgba(255,255,255,.06);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.3);}
+    .mockup-bar{background:rgba(255,255,255,.04);padding:10px 16px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05);}
+    .dot{width:9px;height:9px;border-radius:50%;}
+    .url-bar{flex:1;background:rgba(255,255,255,.05);border-radius:5px;height:22px;margin:0 10px;display:flex;align-items:center;padding:0 10px;}
+    .url-text{font-size:10px;color:rgba(255,255,255,.3);font-family:monospace;}
+    .mockup-body{padding:24px;}
+    .board-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:99px;padding:5px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,.6);}
+    .board-tag.active{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.35);color:#6EE7B7;}
+    .post-row{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+    .post-row:last-child{border-bottom:none;}
+    .post-num{font-size:10px;color:rgba(255,255,255,.2);width:20px;text-align:center;}
+    .post-text{flex:1;font-size:12px;color:rgba(255,255,255,.75);font-weight:500;margin:0 10px;}
+    .post-meta{font-size:10px;color:rgba(255,255,255,.25);}
+    footer{background:var(--dark);color:rgba(255,255,255,.3);padding:40px 0;font-size:12px;}
+    .f-inner{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .f-logo{font-size:18px;font-weight:900;color:#fff;display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+    .pjt-nav{display:flex;gap:6px;margin-top:10px;}
+    .pjt-btn{padding:5px 14px;border-radius:99px;font-size:12px;font-weight:700;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);transition:.15s;}
+    .pjt-btn:hover{border-color:rgba(255,255,255,.25);color:#fff;}
+    .pjt-btn.cur{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.4);color:#6EE7B7;}
+    @media(max-width:900px){.req-grid{grid-template-columns:repeat(2,1fr);}.impl-grid{grid-template-columns:1fr;}.nav-links{display:none;}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo"><span class="logo-dot"></span>FinHub</a>
+    <div class="nav-links">
+      <a href="../pjt01/index.html" class="nav-link">PJT 01</a>
+      <a href="../pjt02/index.html" class="nav-link">PJT 02</a>
+      <a href="../pjt03/index.html" class="nav-link">PJT 03</a>
+      <a href="./index.html" class="nav-link active">PJT 04</a>
+      <a href="../pjt05/index.html" class="nav-link">PJT 05</a>
+    </div>
+    <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> 돌아가기</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:48px;flex-wrap:wrap;">
+      <div class="orb"><div class="orb-ring"></div><div class="orb-inner"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#10B981"/><stop offset="1" stop-color="#3B82F6"/></linearGradient></defs><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="url(#g4)"/></svg></div></div>
+      <div style="flex:1;min-width:280px;">
+        <div class="badge"><span></span>PJT 04 · 2026.04.17</div>
+        <h1 style="font-size:44px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1.1;margin-bottom:16px;">금융 자산 정보<br>토론 게시판</h1>
+        <p style="font-size:16px;color:rgba(255,255,255,.45);line-height:1.75;max-width:520px;">Django CRUD, URL 라우팅, Model, View, Template으로 자산별 토론 게시판을 구현하는 Django 핵심 프로젝트</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-label">과제 브리핑</div>
+    <h2 class="sec-h">학습 목표</h2>
+    <p class="sec-sub">Django URL 라우팅 · View · Template · Model · CRUD · JSON 파일 연동 · 404 처리</p>
+    <div class="req-grid">
+      <div class="req-card"><div class="req-num">F401 · 필수</div><div class="req-title">자산 목록 출력</div><div class="req-desc">assets.json에서 자산 데이터를 읽어 자산명·코드·게시판 이동 링크를 출력한다.</div></div>
+      <div class="req-card"><div class="req-num">F402 · 필수</div><div class="req-title">게시판 모델 설계</div><div class="req-desc">게시글 저장용 Post 모델을 정의하고 마이그레이션을 적용한다.</div></div>
+      <div class="req-card"><div class="req-num">F403 · 필수</div><div class="req-title">CRUD 구현</div><div class="req-desc">게시글 작성·조회·수정·삭제 기능을 Variable Routing과 ModelForm으로 구현한다.</div></div>
+      <div class="req-card"><div class="req-num">F404 · 심화</div><div class="req-title">LLM 콘텐츠 필터링</div><div class="req-desc">OpenAI/Upstage API로 게시글 등록·수정 시 부적절 표현을 자동 차단한다.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-bg">
+  <div class="container">
+    <div class="impl-grid">
+      <div>
+        <div class="sec-label">FinHub 적용</div>
+        <h2 class="sec-h">boards 앱에서<br>이렇게 구현했어요</h2>
+        <p class="sec-sub" style="margin-bottom:28px;">PJT04의 게시판 CRUD를 FinHub의 10개 금융 자산과 연동해 자산별 토론 커뮤니티로 확장했습니다.</p>
+        <div class="step"><div class="step-num">1</div><div><div class="step-title">assets.json → 자산 목록</div><div class="step-desc">data/assets.json에서 10개 자산 데이터 로드, boards/ 홈에 카드 형태로 출력</div></div></div>
+        <div class="step"><div class="step-num">2</div><div><div class="step-title">Variable Routing CRUD</div><div class="step-desc">/boards/&lt;asset_id&gt;/&lt;pk&gt;/ 형태로 자산별·게시글별 URL 구조 설계</div></div></div>
+        <div class="step"><div class="step-num">3</div><div><div class="step-title">Post 모델 + 조회수</div><div class="step-desc">author(FK), view_count, is_filtered 필드 포함 Post 모델 구현</div></div></div>
+        <div class="step"><div class="step-num">4</div><div><div class="step-title">잘못된 자산 ID → 404</div><div class="step-desc">assets.json에 없는 asset_id 접근 시 get_object_or_404로 안전하게 처리</div></div></div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar"><div class="dot" style="background:#FF5F57;"></div><div class="dot" style="background:#FFBD2E;"></div><div class="dot" style="background:#28C840;"></div><div class="url-bar"><span class="url-text">localhost:8000/boards/AAPL/</span></div></div>
+        <div class="mockup-body">
+          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">투자 토론</div>
+          <div style="font-size:18px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:14px;">AAPL 게시판</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+            <span class="board-tag active">🍎 AAPL</span>
+            <span class="board-tag">🟩 NVDA</span>
+            <span class="board-tag">⚡ TSLA</span>
+            <span class="board-tag">₿ BTC</span>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:4px 12px;">
+            <div class="post-row"><div class="post-num">1</div><div class="post-text">AAPL 실적 발표 후 전망 — 여러분 생각은?</div><div class="post-meta">142회</div></div>
+            <div class="post-row"><div class="post-num">2</div><div class="post-text">EMA 골든크로스 포착, 지금 매수 타이밍?</div><div class="post-meta">89회</div></div>
+            <div class="post-row"><div class="post-num">3</div><div class="post-text">RSI 70 돌파, 과매수 신호 어떻게 보세요?</div><div class="post-meta">215회</div></div>
+          </div>
+          <div style="margin-top:12px;text-align:right;"><span style="background:rgba(16,185,129,.2);color:#6EE7B7;border:1px solid rgba(16,185,129,.3);border-radius:99px;padding:5px 14px;font-size:11px;font-weight:700;">글쓰기 +</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-inner">
+    <div><div class="f-logo"><span class="logo-dot"></span>FinHub</div><div>© 2026 FinHub · 교육용 프로젝트</div></div>
+    <div><div style="font-size:11px;color:rgba(255,255,255,.2);margin-bottom:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;">다른 프로젝트</div><div class="pjt-nav"><a href="../pjt01/index.html" class="pjt-btn">PJT 01</a><a href="../pjt02/index.html" class="pjt-btn">PJT 02</a><a href="../pjt03/index.html" class="pjt-btn">PJT 03</a><a href="./index.html" class="pjt-btn cur">PJT

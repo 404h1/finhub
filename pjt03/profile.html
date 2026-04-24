@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>투자 프로필 | 금융 상품 비교 앱</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #f8fafc; font-family: 'Segoe UI', sans-serif; }
+
+    /* Nav */
+    .navbar { background: #fff; border-bottom: 1px solid #e2e8f0; }
+    .navbar-brand { font-weight: 700; color: #0d9488 !important; }
+    .nav-link { color: #64748b !important; font-weight: 500; }
+    .nav-link:hover, .nav-link.active { color: #0d9488 !important; }
+
+    /* 프로필 카드 */
+    .profile-card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+    .profile-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 16px rgba(13,148,136,.25); border: 3px solid #ccfbf1; }
+    .profile-img-placeholder { width: 100px; height: 100px; border-radius: 50%; background: #ccfbf1; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #0d9488; font-weight: 700; box-shadow: 0 4px 16px rgba(13,148,136,.25); }
+
+    /* 뱃지 */
+    .stock-badge { background: #ccfbf1; color: #0d9488; border-radius: 99px; padding: 3px 14px; font-size: .8rem; font-weight: 600; display: inline-block; margin: 2px; }
+    .style-badge { background: #e0f2fe; color: #0369a1; border-radius: 99px; padding: 3px 14px; font-size: .8rem; font-weight: 600; }
+
+    /* 폼 카드 */
+    .section-card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 1.75rem; box-shadow: 0 1px 4px rgba(0,0,0,.06); margin-bottom: 1.5rem; }
+    .section-title { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid #f1f5f9; }
+    .form-label { font-size: .875rem; font-weight: 600; color: #374151; }
+    .form-control:focus, .form-check-input:focus { border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13,148,136,.15); }
+    .form-check-input:checked { background-color: #0d9488; border-color: #0d9488; }
+
+    /* 저장 버튼 */
+    .btn-save { background: #0d9488; color: #fff; border: none; border-radius: 8px; padding: .6rem 1.5rem; font-weight: 600; transition: .2s; }
+    .btn-save:hover { background: #0f766e; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(13,148,136,.3); }
+
+    /* 반응형 */
+    @media (max-width: 576px) {
+      .profile-card, .section-card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- F303: 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">🏦 FinHub</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link active" href="profile.html">기본 정보</a></li>
+        <li class="nav-item"><a class="nav-link" href="portfolio.html">포트폴리오</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <div class="row g-4">
+
+    <!-- 좌측: 프로필 이미지 + 투자 성향 (F301) -->
+    <div class="col-lg-4">
+      <div class="profile-card text-center">
+        <div class="d-flex justify-content-center mb-3">
+          <!-- 프로필 이미지 (없으면 이니셜 표시) -->
+          <div class="profile-img-placeholder">H</div>
+        </div>
+        <h5 class="fw-bold mb-1">이혜</h5>
+        <p class="text-muted small mb-3">@hwlee154</p>
+
+        <!-- 자기소개 -->
+        <div class="mb-3 text-start">
+          <label class="form-label">자기소개</label>
+          <textarea class="form-control" rows="3" placeholder="자기소개를 입력하세요">성장주와 디지털 자산에 관심 있는 투자자입니다.</textarea>
+        </div>
+
+        <hr>
+        <!-- 투자 성향 -->
+        <div class="text-start">
+          <p class="fw-semibold mb-2" style="font-size:.9rem;">투자 상품 선호도 (복수 선택)</p>
+          <div class="mb-3">
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="s1"><label class="form-check-label" for="s1">국내 주식</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="s2"><label class="form-check-label" for="s2">해외 주식</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" id="s3"><label class="form-check-label" for="s3">펀드 / ETF</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="s4"><label class="form-check-label" for="s4">암호화폐</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" id="s5"><label class="form-check-label" for="s5">예금 / 적금</label></div>
+          </div>
+          <p class="fw-semibold mb-2" style="font-size:.9rem;">투자 스타일 (단일 선택)</p>
+          <div class="mb-3">
+            <div class="form-check"><input class="form-check-input" type="radio" name="style" id="r1" checked><label class="form-check-label" for="r1">공격형</label></div>
+            <div class="form-check"><input class="form-check-input" type="radio" name="style" id="r2"><label class="form-check-label" for="r2">중립형</label></div>
+            <div class="form-check"><input class="form-check-input" type="radio" name="style" id="r3"><label class="form-check-label" for="r3">안정형</label></div>
+          </div>
+          <p class="fw-semibold mb-2" style="font-size:.9rem;">관심 종목 (복수 선택)</p>
+          <div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="t1"><label class="form-check-label" for="t1">AAPL</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="t2"><label class="form-check-label" for="t2">삼성전자</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="t3"><label class="form-check-label" for="t3">BTC</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" id="t4"><label class="form-check-label" for="t4">TSLA</label></div>
+          </div>
+        </div>
+        <button class="btn btn-save w-100 mt-3">저장하기</button>
+      </div>
+    </div>
+
+    <!-- 우측: 회원 정보 (F302) -->
+    <div class="col-lg-8">
+      <div class="section-card">
+        <div class="section-title">기본 회원 정보</div>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label">회원 번호</label>
+            <input type="text" class="form-control" value="USR-20260124-001" readonly style="background:#f8fafc;">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">아이디</label>
+            <input type="text" class="form-control" value="hwlee154" readonly style="background:#f8fafc;">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">이메일</label>
+            <input type="email" class="form-control" value="hwlee154@gmail.com" placeholder="example@email.com">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">닉네임</label>
+            <input type="text" class="form-control" value="이혜">
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label">나이</label>
+            <input type="number" class="form-control" value="26" min="1" max="120">
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label">자산 (만원)</label>
+            <input type="number" class="form-control" value="5000">
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label">연봉 (만원)</label>
+            <input type="number" class="form-control" value="3600">
+          </div>
+        </div>
+        <div class="mt-3 text-end">
+          <button class="btn btn-save">정보 저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

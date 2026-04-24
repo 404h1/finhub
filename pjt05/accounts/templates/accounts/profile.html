@@ -1,0 +1,45 @@
+{% extends "community/base.html" %}
+{% block title %}프로필 | 금융 자산 커뮤니티{% endblock %}
+{% block content %}
+<div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap;">
+  {% if user.profile_image %}
+    <img src="{{ user.profile_image.url }}" alt="프로필" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--color-border);">
+  {% else %}
+    <div style="width:80px;height:80px;border-radius:50%;background:var(--color-primary-light);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--color-primary);font-weight:700;flex-shrink:0;">
+      {{ user.nickname|first|upper }}
+    </div>
+  {% endif %}
+  <div>
+    <h2 class="page-title" style="margin-bottom:.25rem;">{{ user.nickname }}</h2>
+    <p class="text-muted">@{{ user.username }}</p>
+    {% if user.get_interest_stocks_list %}
+    <div style="display:flex;flex-wrap:wrap;gap:.375rem;margin-top:.75rem;">
+      {% for stock in user.get_interest_stocks_list %}
+      <span style="background:var(--color-primary-light);color:var(--color-primary);border-radius:99px;padding:2px 12px;font-size:.75rem;font-weight:600;">{{ stock }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="btn-group" style="margin-bottom:1.75rem;">
+  <a href="{% url 'accounts:password_change' %}" class="btn btn-outline btn-sm">비밀번호 변경</a>
+</div>
+
+<h3 style="font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.04em;">내가 작성한 게시글 ({{ my_posts.count }})</h3>
+
+{% if my_posts %}
+<div style="display:flex;flex-direction:column;gap:.625rem;">
+  {% for post in my_posts %}
+  <div class="card-item">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
+      <a href="{% url 'community:post_detail' asset_id=post.asset_id post_id=post.id %}">{{ post.title }}</a>
+      <span style="font-size:.75rem;color:var(--color-text-muted);">{{ post.asset_id }} · {{ post.created_at|date:"Y.m.d" }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">아직 작성한 게시글이 없습니다.</p>
+{% endif %}
+{% endblock %}
