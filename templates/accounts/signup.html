@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}회원가입{% endblock %}
+{% block content %}
+<div class="auth-wrap" style="padding:40px 16px;">
+  <div class="auth-card" style="max-width:480px;">
+    <div class="auth-logo mb-2">FinHub</div>
+    <h2 style="font-size:24px;font-weight:800;margin-bottom:4px;">시작해봐요</h2>
+    <p style="color:var(--text-3);font-size:14px;margin-bottom:32px;">무료로 가입하고 모든 기능을 이용하세요</p>
+    <form method="POST" class="form-fh">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-3">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div class="text-danger mt-1" style="font-size:12px;">{{ field.errors|join:", " }}</div>{% endif %}
+        {% if field.help_text %}<div style="font-size:12px;color:var(--text-3);margin-top:4px;">{{ field.help_text }}</div>{% endif %}
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn-primary-fh w-100 mt-2" style="padding:14px;font-size:16px;justify-content:center;">가입하기</button>
+    </form>
+    <div class="text-center mt-4" style="font-size:14px;color:var(--text-3);">
+      이미 계정이 있으신가요? <a href="/accounts/login/" style="color:var(--primary);font-weight:600;">로그인</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

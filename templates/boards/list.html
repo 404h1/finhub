@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}{{ asset.name }} 토론{% endblock %}
+{% block nav_boards %}active{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="hero-label">{{ asset.type }} · {{ asset.code }}</div>
+    <h1>{{ asset.name }}</h1>
+    <p>{{ asset.desc }}</p>
+    {% if request.user.is_authenticated %}
+    <div class="mt-4">
+      <a href="/boards/{{ asset.id }}/create/" class="btn-primary-fh"><i class="bi bi-pencil-square me-1"></i>글 쓰기</a>
+      <a href="/stocks/{{ asset.code }}/" class="btn-outline-fh ms-2" style="color:#fff;border-color:rgba(255,255,255,.3);">차트 분석 <i class="bi bi-graph-up"></i></a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div style="font-size:13px;color:var(--text-3);">총 {{ posts|length }}개 게시글 · 최신순</div>
+    {% if not request.user.is_authenticated %}
+    <a href="/accounts/login/" class="btn-outline-fh" style="font-size:13px;padding:8px 16px;">로그인 후 참여</a>
+    {% endif %}
+  </div>
+
+  <div class="card-fh">
+    {% for post in posts %}
+    <a href="/boards/{{ asset.id }}/{{ post.pk }}/">
+      <div class="post-row">
+        <div style="flex:1;">
+          <div class="post-title-link">{{ post.title }}</div>
+          <div class="post-meta mt-1">
+            <i class="bi bi-person me-1"></i>{{ post.author.get_display_name }}
+            <span class="mx-1">·</span><i class="bi bi-eye me-1"></i>{{ post.view_count }}
+          </div>
+        </div>
+        <div class="post-meta" style="flex-shrink:0;">{{ post.created_at|date:"m.d H:i" }}</div>
+        <i class="bi bi-chevron-right" style="color:var(--border);"></i>
+      </div>
+    </a>
+    {% empty %}
+    <div style="padding:60px;text-align:center;">
+      <i class="bi bi-chat-square" style="font-size:48px;color:var(--border);display:block;margin-bottom:16px;"></i>
+      <p style="color:var(--text-3);margin-bottom:16px;">아직 게시글이 없습니다. 첫 글을 작성해보세요!</p>
+      {% if request.user.is_authenticated %}
+      <a href="/boards/{{ asset.id }}/create/" class="btn-primary-fh">첫 글 작성하기</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="mt-4"><a href="/boards/" class="btn-ghost-fh">← 게시판 목록</a></div>
+</div>
+{% endblock %}

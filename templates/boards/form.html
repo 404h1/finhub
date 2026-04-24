@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{% if action == 'create' %}글 쓰기{% else %}게시글 수정{% endif %}{% endblock %}
+{% block nav_boards %}active{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container"><div class="hero-label">{{ asset.name }}</div><h1>{% if action == 'create' %}새 글 작성{% else %}게시글 수정{% endif %}</h1></div></div>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card-fh">
+        <div class="card-fh-body">
+          <form method="POST" class="form-fh">
+            {% csrf_token %}
+            <div class="mb-4">
+              <label>제목</label>
+              {{ form.title }}
+              {% if form.title.errors %}<div class="text-danger mt-1" style="font-size:12px;">{{ form.title.errors|join:", " }}</div>{% endif %}
+            </div>
+            <div class="mb-4">
+              <label>내용</label>
+              {{ form.content }}
+              {% if form.content.errors %}<div class="text-danger mt-1" style="font-size:12px;">{{ form.content.errors|join:", " }}</div>{% endif %}
+            </div>
+            <div class="d-flex gap-3">
+              <button type="submit" class="btn-primary-fh" style="padding:12px 28px;">{% if action == 'create' %}등록하기{% else %}수정하기{% endif %}</button>
+              <a href="/boards/{{ asset.id }}/" class="btn-ghost-fh" style="padding:12px 24px;">취소</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

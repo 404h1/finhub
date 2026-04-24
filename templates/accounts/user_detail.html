@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile_user.get_display_name }}{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container"><h1>{{ profile_user.get_display_name }}</h1><p>@{{ profile_user.username }}</p></div></div>
+<div class="container py-5">
+  <div class="row g-4 justify-content-center">
+    <div class="col-lg-5">
+      <div class="card-fh text-center">
+        <div class="card-fh-body">
+          {% if profile_user.profile_image %}<img src="{{ profile_user.profile_image.url }}" class="avatar-img" style="width:80px;height:80px;margin-bottom:12px;">
+          {% else %}<div class="avatar-placeholder" style="width:80px;height:80px;font-size:28px;margin:0 auto 12px;">{{ profile_user.get_display_name|first|upper }}</div>{% endif %}
+          <h3 style="font-weight:800;">{{ profile_user.get_display_name }}</h3>
+          <div style="color:var(--text-3);font-size:13px;margin-bottom:12px;">@{{ profile_user.username }} · {{ profile_user.date_joined|date:"Y년 m월" }} 가입</div>
+          <div class="inv-pill justify-content-center mb-3"><i class="bi bi-lightning-charge-fill"></i>{{ profile_user.get_investment_style_display }}</div>
+          {% if profile_user.bio %}<p style="font-size:14px;color:var(--text-2);background:var(--surface-2);padding:12px;border-radius:var(--radius);text-align:left;">{{ profile_user.bio }}</p>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}프로필 수정{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container"><h1>프로필 수정</h1><p>내 정보를 최신 상태로 유지하세요</p></div></div>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <div class="card-fh">
+        <div class="card-fh-body">
+          <form method="POST" enctype="multipart/form-data" class="form-fh">
+            {% csrf_token %}
+            <h5 style="font-weight:700;margin-bottom:20px;">기본 정보</h5>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6"><label>이메일</label>{{ form.email }}</div>
+              <div class="col-md-6"><label>닉네임</label>{{ form.nickname }}</div>
+              <div class="col-md-6"><label>나이</label>{{ form.age }}</div>
+              <div class="col-md-6"><label>투자 성향</label>{{ form.investment_style }}</div>
+              <div class="col-12"><label>자기소개</label>{{ form.bio }}</div>
+              <div class="col-12"><label>프로필 사진</label>{{ form.profile_image }}{% if request.user.profile_image %}<div style="margin-top:8px;"><img src="{{ request.user.profile_image.url }}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"></div>{% endif %}</div>
+            </div>
+            <div class="divider"></div>
+            <h5 style="font-weight:700;margin-bottom:20px;">재무 & 포트폴리오</h5>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6"><label>보유 자산 (원)</label>{{ form.assets }}</div>
+              <div class="col-md-6"><label>연봉 (원)</label>{{ form.salary }}</div>
+              <div class="col-md-6"><label>최애 은행</label>{{ form.favorite_bank }}</div>
+              <div class="col-md-6"><label>저축 성향</label>{{ form.saving_style }}</div>
+              <div class="col-12"><label>관심 종목 (쉼표로 구분, 예: AAPL, 삼성전자)</label>{{ form.interest_stocks }}</div>
+            </div>
+            <div class="d-flex gap-3">
+              <button type="submit" class="btn-primary-fh" style="padding:12px 28px;">저장하기</button>
+              <a href="/accounts/profile/" class="btn-ghost-fh" style="padding:12px 24px;">취소</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

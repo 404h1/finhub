@@ -1,0 +1,9 @@
+django>=4.2
+python-dotenv
+requests
+yfinance
+pandas
+numpy
+Pillow
+plotly
+ta

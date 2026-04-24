@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.fin_prdt_nm }}{% endblock %}
+{% block nav_products %}active{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container"><div class="hero-label">{{ product.kor_co_nm }}</div><h1>{{ product.fin_prdt_nm }}</h1><p>정기예금 상품 상세 정보</p></div></div>
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card-fh mb-4">
+        <div class="card-fh-body text-center">
+          <div style="font-size:13px;color:var(--text-3);margin-bottom:4px;">최고 우대금리</div>
+          <div style="font-size:56px;font-weight:900;color:var(--primary);letter-spacing:-2px;line-height:1;">{{ product.get_best_rate|floatformat:2 }}<span style="font-size:28px;">%</span></div>
+          <div class="divider"></div>
+          <div class="d-flex justify-content-between py-1"><span style="font-size:13px;color:var(--text-3);">금융회사</span><span style="font-weight:600;font-size:14px;">{{ product.kor_co_nm }}</span></div>
+          <div class="d-flex justify-content-between py-1"><span style="font-size:13px;color:var(--text-3);">가입 방법</span><span style="font-weight:600;font-size:14px;">{{ product.join_way|truncatechars:20 }}</span></div>
+          <div class="d-flex justify-content-between py-1"><span style="font-size:13px;color:var(--text-3);">공시 월</span><span style="font-weight:600;font-size:14px;">{{ product.dcls_month }}</span></div>
+        </div>
+      </div>
+      <a href="/products/" class="btn-ghost-fh w-100" style="justify-content:center;padding:12px;">← 목록으로</a>
+    </div>
+    <div class="col-lg-8">
+      <div class="card-fh mb-4">
+        <div class="card-fh-header">금리 옵션</div>
+        <div class="card-fh-body" style="padding:0;">
+          <table class="table-fh">
+            <thead><tr><th>기간</th><th>금리 유형</th><th>기본 금리</th><th>최고 우대 금리</th></tr></thead>
+            <tbody>
+              {% for o in options %}
+              <tr>
+                <td><span class="badge-fh badge-blue">{{ o.save_trm }}개월</span></td>
+                <td>{{ o.intr_rate_type_nm }}</td>
+                <td style="font-weight:600;">{{ o.intr_rate|default:'-'|floatformat:2 }}%</td>
+                <td style="font-weight:800;color:var(--primary);font-size:16px;">{{ o.intr_rate2|default:o.intr_rate|floatformat:2 }}%</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="4" style="text-align:center;color:var(--text-3);">금리 정보 없음</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% if product.spcl_cnd %}
+      <div class="card-fh mb-4"><div class="card-fh-header">우대 조건</div><div class="card-fh-body"><p style="font-size:14px;color:var(--text-2);line-height:1.7;">{{ product.spcl_cnd }}</p></div></div>
+      {% endif %}
+      {% if product.etc_note %}
+      <div class="card-fh"><div class="card-fh-header">유의 사항</div><div class="card-fh-body"><p style="font-size:13px;color:var(--text-3);line-height:1.7;">{{ product.etc_note }}</p></div></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

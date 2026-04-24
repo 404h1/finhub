@@ -1,0 +1,12 @@
+[
+  {"id":"AAPL",     "name":"Apple Inc.",      "code":"AAPL",     "type":"주식",  "desc":"세계 최대 시가총액 기업. iPhone, Mac, iPad 등을 제조·판매합니다."},
+  {"id":"MSFT",     "name":"Microsoft",       "code":"MSFT",     "type":"주식",  "desc":"클라우드(Azure)와 소프트웨어(Office) 분야 선도 기업입니다."},
+  {"id":"NVDA",     "name":"NVIDIA",          "code":"NVDA",     "type":"주식",  "desc":"AI·GPU 시장의 핵심 기업. 데이터센터 수요 급증으로 주목받고 있습니다."},
+  {"id":"TSLA",     "name":"Tesla",           "code":"TSLA",     "type":"주식",  "desc":"전기차 및 에너지 솔루션 선도 기업. CEO 일론 머스크로 유명합니다."},
+  {"id":"005930KS", "name":"삼성전자",        "code":"005930.KS","type":"주식",  "desc":"대한민국 최대 기업. 반도체·스마트폰·가전 등 다각화된 사업 구조."},
+  {"id":"000660KS", "name":"SK하이닉스",      "code":"000660.KS","type":"주식",  "desc":"D램·낸드플래시 세계 2위. AI 반도체 수요 급증 수혜 기업."},
+  {"id":"BTC",      "name":"Bitcoin",         "code":"BTC-USD",  "type":"코인",  "desc":"세계 최초·최대 암호화폐. 디지털 금으로 불리며 기관 투자 증가 중."},
+  {"id":"ETH",      "name":"Ethereum",        "code":"ETH-USD",  "type":"코인",  "desc":"스마트컨트랙트 플랫폼. DeFi·NFT 생태계의 핵심 기반 기술."},
+  {"id":"GOLD",     "name":"금 (Gold)",       "code":"GC=F",     "type":"원자재","desc":"안전자산의 대명사. 인플레이션 헤지 및 포트폴리오 분산 수단."},
+  {"id":"CRUDE",    "name":"원유 (Crude Oil)","code":"CL=F",     "type":"원자재","desc":"글로벌 경기 및 지정학적 리스크에 민감하게 반응하는 대표 원자재."}
+]

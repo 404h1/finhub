@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-FOOD AI MARKETING | Premium Edition</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+:root {
+  --primary-bg: linear-gradient(135deg, #4B2B85 0%, #B82C4E 50%, #E84E24 100%);
+  --primary-bg-hover: linear-gradient(135deg, #3B1C6B 0%, #8E0E2F 50%, #cc421d 100%);
+  --primary-border: #B82C4E;
+  --glass: rgba(255,255,255,0.65);
+  --glass-border: rgba(255,255,255,0.4);
+  --text-main: #1D1D1F;
+  --text-sub: #424245;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --shadow: 0 8px 32px 0 rgba(31,38,135,0.15);
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Pretendard',-apple-system,sans-serif; }
+body {
+  background: linear-gradient(135deg,#f5f7fa 0%,#e8d5f5 40%,#ffd6e0 70%,#ffe0cc 100%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* NAV */
+.navbar {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:20px 60px;
+  background:rgba(255,255,255,0.3); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--glass-border);
+  position:sticky; top:0; z-index:1000;
+}
+.logo { font-weight:800; font-size:20px; letter-spacing:-0.5px; }
+.logo span { background:var(--primary-bg); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.nav-right { font-size:13px; color:var(--text-sub); font-weight:600; }
+
+/* HERO */
+.hero { text-align:center; padding:70px 20px 40px; }
+.hero-label {
+  display:inline-block; padding:6px 16px; background:#fff; border-radius:100px;
+  font-size:12px; font-weight:700; color:var(--text-sub);
+  border:1px solid var(--glass-border); margin-bottom:24px; box-shadow:var(--shadow);
+}
+.hero h1 { font-size:46px; font-weight:800; line-height:1.2; margin-bottom:14px; letter-spacing:-1.5px; }
+.hero h1 span { background:var(--primary-bg); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero p { font-size:17px; color:var(--text-sub); }
+
+/* 3-STEP FLOW */
+.flow-container {
+  display:grid; grid-template-columns:1fr 1.5fr 1fr; gap:20px;
+  max-width:1300px; margin:0 auto; padding:40px 60px;
+}
+.card {
+  background:var(--glass); backdrop-filter:blur(15px);
+  border-radius:var(--radius-lg); border:1px solid var(--glass-border);
+  padding:28px; box-shadow:var(--shadow);
+  transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+  position:relative;
+}
+.card.disabled-step { opacity:0.4; pointer-events:none; filter:grayscale(80%); }
+.card.active-step { box-shadow:0 12px 40px rgba(184,44,78,0.15); border-color:rgba(184,44,78,0.3); }
+.card:hover:not(.disabled-step) { transform:translateY(-4px); }
+
+.card-title { font-size:17px; font-weight:700; margin-bottom:22px; display:flex; align-items:center; justify-content:space-between; }
+.card-title-left { display:flex; align-items:center; gap:10px; }
+.step-num { width:24px; height:24px; background:var(--primary-bg); color:#fff; border-radius:50%; font-size:12px; display:flex; align-items:center; justify-content:center; font-weight:700; }
+.step-badge { font-size:11px; padding:4px 10px; border-radius:100px; background:#f0f0f0; color:#888; font-weight:600; }
+.active-step .step-badge { background:var(--primary-bg); color:#fff; }
+
+/* Step 1 */
+.country-list { display:grid; gap:10px; }
+.country-item {
+  display:flex; align-items:center; gap:12px; padding:14px 16px;
+  background:#fff; border-radius:var(--radius-md); border:1.5px solid transparent;
+  cursor:pointer; transition:0.2s;
+}
+.country-item:hover { border-color:var(--primary-border); }
+.country-item.selected { background:var(--primary-bg); color:#fff; }
+.country-item.selected .growth { color:rgba(255,255,255,0.85); }
+.country-flag { font-size:22px; }
+.country-name { font-size:14px; font-weight:700; }
+.growth { font-size:12px; color:#10B981; font-weight:600; }
+
+/* Step 2 */
+.input-group { margin-bottom:18px; }
+.input-group label { display:block; font-size:11px; font-weight:700; margin-bottom:8px; color:var(--text-sub); text-transform:uppercase; letter-spacing:0.4px; }
+input, select {
+  width:100%; padding:13px 14px; border-radius:12px;
+  border:1px solid var(--glass-border); background:rgba(255,255,255,0.8);
+  font-size:14px; outline:none; transition:0.2s; font-family:inherit;
+}
+input:focus, select:focus { border-color:var(--primary-border); box-shadow:0 0 0 4px rgba(184,44,78,0.1); }
+.next-btn {
+  width:100%; padding:15px; background:var(--text-main); color:#fff;
+  border:none; border-radius:12px; font-weight:700; cursor:pointer;
+  margin-top:8px; transition:0.2s; font-size:14px; font-family:inherit;
+}
+.next-btn:hover { background:#000; }
+.next-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+/* Step 3 */
+.initiative-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.tag {
+  padding:9px 16px; background:#fff; border-radius:100px; font-size:13px; font-weight:600;
+  border:1.5px solid transparent; cursor:pointer; transition:0.2s;
+}
+.tag:hover { border-color:var(--primary-border); }
+.tag.on { background:var(--primary-bg); color:#fff; border-color:transparent; }
+
+.final-action-wrap {
+  opacity:0; pointer-events:none; transition:opacity 0.4s; height:0; overflow:hidden;
+  display:flex; flex-direction:column; align-items:center;
+}
+.final-action-wrap.show { opacity:1; pointer-events:auto; height:auto; margin-top:20px; }
+.nudge-finger { font-size:30px; margin-bottom:-4px; animation:bounce 1.2s infinite ease-in-out; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.main-button {
+  width:100%; background:var(--primary-bg); color:#fff; padding:22px;
+  border-radius:var(--radius-lg); font-size:17px; font-weight:800; border:none;
+  cursor:pointer; transition:0.3s; box-shadow:0 10px 20px rgba(184,44,78,0.2);
+  font-family:inherit;
+}
+.main-button:hover { background:var(--primary-bg-hover); transform:scale(1.02); }
+
+/* ===== RESULTS ===== */
+.results-section { max-width:1300px; margin:0 auto; padding:0 60px 80px; display:none; }
+.results-section.active { display:block; animation:fadeUp 0.5s ease-out; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+.results-header { margin-bottom:32px; }
+.results-header h2 { font-size:28px; font-weight:800; letter-spacing:-0.5px; margin-bottom:8px; }
+.results-header p { font-size:14px; color:var(--text-sub); }
+.results-meta {
+  display:inline-flex; align-items:center; gap:10px; margin-top:12px;
+  background:rgba(255,255,255,0.7); border-radius:100px; padding:8px 18px;
+  font-size:13px; font-weight:600; border:1px solid var(--glass-border);
+}
+
+/* Content Cards Grid */
+.content-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:24px; }
+
+.content-card {
+  background:var(--glass); backdrop-filter:blur(15px);
+  border-radius:var(--radius-lg); border:1px solid var(--glass-border);
+  box-shadow:var(--shadow); overflow:hidden;
+  animation:fadeUp 0.4s ease-out both;
+}
+.content-card:nth-child(1){animation-delay:.05s}
+.content-card:nth-child(2){animation-delay:.10s}
+.content-card:nth-child(3){animation-delay:.15s}
+.content-card:nth-child(4){animation-delay:.20s}
+.content-card:nth-child(5){animation-delay:.25s}
+
+.content-img-wrap { position:relative; }
+.content-img-placeholder {
+  width:100%; height:200px; display:flex; align-items:center; justify-content:center;
+  font-size:5rem;
+  background: linear-gradient(135deg, rgba(75,43,133,0.08), rgba(232,78,36,0.08));
+}
+.content-img-badge {
+  position:absolute; top:12px; left:12px;
+  background:var(--primary-bg); color:#fff;
+  padding:5px 12px; border-radius:100px; font-size:11px; font-weight:700;
+}
+
+.content-body { padding:20px; }
+.content-initiative { font-size:13px; font-weight:700; color:var(--primary-border); margin-bottom:10px; }
+.content-caption {
+  font-size:13px; line-height:1.7; color:var(--text-sub); margin-bottom:16px;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+}
+
+/* Platform Hashtag Tabs */
+.platform-tabs { display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+.ptab {
+  padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700;
+  cursor:pointer; transition:0.15s; border:1.5px solid #e0e0e0; background:#fff;
+  color:var(--text-sub);
+}
+.ptab.active { border-color:var(--primary-border); color:var(--primary-border); background:#fff8fa; }
+
+.hashtag-area {
+  background:#f4f4f8; border-radius:10px; padding:11px 13px;
+  font-size:12px; color:#5856D6; line-height:1.8; min-height:58px;
+  word-break:break-all; margin-bottom:14px;
+}
+
+/* Action Row */
+.action-row { display:flex; gap:8px; flex-wrap:wrap; }
+.act-copy {
+  padding:10px 16px; border-radius:10px; font-size:12px; font-weight:700;
+  cursor:pointer; border:none; background:#f0f0f0; color:var(--text-main);
+  transition:0.2s; font-family:inherit;
+}
+.act-copy:hover { background:#e0e0e0; }
+.copied { background:#d1fae5 !important; color:#065f46 !important; }
+
+.act-platform {
+  flex:1; padding:10px 14px; border-radius:10px; font-size:12px; font-weight:700;
+  cursor:pointer; border:none; color:#fff; transition:0.2s; font-family:inherit;
+  display:flex; align-items:center; justify-content:center; gap:5px;
+  min-width:0;
+}
+.act-platform:hover { opacity:0.85; filter:brightness(1.05); }
+.p-instagram { background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+.p-tiktok { background:#010101; }
+.p-youtube { background:#FF0000; }
+.p-twitter { background:#000; }
+
+/* Loading shimmer */
+.loading-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:24px; }
+.shimmer {
+  border-radius:var(--radius-lg); height:420px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.5) 25%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.5) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+footer { text-align:center; padding:40px; color:var(--text-sub); font-size:13px; opacity:0.5; }
+
+@media(max-width:900px) {
+  .flow-container { grid-template-columns:1fr; }
+  .navbar,.flow-container,.results-section { padding-left:20px; padding-right:20px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">K-FOOD <span>AI</span> NAVIGATOR</div>
+  <div class="nav-right">2026 Global Initiative Project</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-label">AI-POWERED K-FOOD MARKETING</div>
+  <h1>데이터로 설계하는<br><span>K-푸드의 새로운 도약</span></h1>
+  <p>시장 × 제품 × K-컬처 조합으로 즉시 사용 가능한 콘텐츠를 생성합니다.</p>
+</section>
+
+<main class="flow-container">
+  <!-- STEP 1 -->
+  <div class="card active-step" id="step1Card">
+    <div class="card-title">
+      <div class="card-title-left"><span class="step-num">1</span> 타겟 시장 선택</div>
+      <span class="step-badge" id="badge1">진행중</span>
+    </div>
+    <div class="country-list">
+      <div class="country-item" onclick="selectCountry(this,'Korea','대한민국')">
+        <span class="country-flag">🇰🇷</span>
+        <div><div class="country-name">국내 · 대한민국</div><div class="growth">↑ 내수 성장세</div></div>
+      </div>
+      <div class="country-item" onclick="selectCountry(this,'UAE','UAE · 두바이')">
+        <span class="country-flag">🇦🇪</span>
+        <div><div class="country-name">UAE · 두바이</div><div class="growth">↑ 37.9%</div></div>
+      </div>
+      <div class="country-item" onclick="selectCountry(this,'Indonesia','인도네시아')">
+        <span class="country-flag">🇮🇩</span>
+        <div><div class="country-name">인도네시아</div><div class="growth">↑ 28.4%</div></div>
+      </div>
+      <div class="country-item" onclick="selectCountry(this,'USA','미국')">
+        <span class="country-flag">🇺🇸</span>
+        <div><div class="country-name">미국</div><div class="growth">↑ 21.7%</div></div>
+      </div>
+      <div class="country-item" onclick="selectCountry(this,'Europe','유럽권')">
+        <span class="country-flag">🇪🇺</span>
+        <div><div class="country-name">유럽권</div><div class="growth">↑ 34.1%</div></div>
+      </div>
+      <div class="country-item" onclick="selectCountry(this,'Japan','일본')">
+        <span class="country-flag">🇯🇵</span>
+        <div><div class="country-name">일본</div><div class="growth">↑ 22.3%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card disabled-step" id="step2Card">
+    <div class="card-title">
+      <div class="card-title-left"><span class="step-num">2</span> 제품 정보 입력</div>
+      <span class="step-badge" id="badge2">대기중</span>
+    </div>
+    <div class="input-group">
+      <label>제품명 *</label>
+      <input type="text" id="pName" placeholder="예: 프리미엄 비건 김치" oninput="checkStep2()">
+    </div>
+    <div class="input-group">
+      <label>카테고리</label>
+      <select id="pCat">
+        <option>발효식품</option>
+        <option>간편 조리식</option>
+        <option>스낵류</option>
+        <option>음료 / 차</option>
+        <option>소스 / 양념</option>
+        <option>냉동식품</option>
+        <option>건강기능식품</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>주요 특징 (선택)</label>
+      <input type="text" id="pFeature" placeholder="예: 비건, 무방부제, 저칼로리">
+    </div>
+    <button class="next-btn" id="btnStep2" onclick="completeStep2()" disabled>다음 단계 →</button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card disabled-step" id="step3Card">
+    <div class="card-title">
+      <div class="card-title-left"><span class="step-num">3</span> K-이니셔티브 선택</div>
+      <span class="step-badge" id="badge3">대기중</span>
+    </div>
+    <div class="initiative-tags">
+      <div class="tag" onclick="toggleTag(this,'K-DRAMA')">🎬 K-DRAMA</div>
+      <div class="tag" onclick="toggleTag(this,'K-POP')">🎵 K-POP</div>
+      <div class="tag" onclick="toggleTag(this,'K-BEAUTY')">✨ K-BEAUTY</div>
+      <div class="tag" onclick="toggleTag(this,'K-WEBTOON')">📱 K-WEBTOON</div>
+      <div class="tag" onclick="toggleTag(this,'K-SPORTS')">⚽ K-SPORTS</div>
+      <div class="tag" onclick="toggleTag(this,'K-FOOD')">🍜 K-FOOD</div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub);line-height:1.6;margin-bottom:4px;">
+      선택한 K-컬처 키워드로 즉시 사용 가능한 콘텐츠와 해시태그가 생성됩니다.
+    </p>
+    <div class="final-action-wrap" id="finalActionWrap">
+      <div class="nudge-finger">👇</div>
+      <button class="main-button" onclick="generateContent()">✨ 콘텐츠 생성하기</button>
+    </div>
+  </div>
+</main>
+
+<!-- ===== RESULTS ===== -->
+<section class="results-section" id="resultsSection">
+  <div class="results-header">
+    <h2>생성된 콘텐츠</h2>
+    <p>각 카드에서 해시태그를 복사하거나 플랫폼으로 바로 이동해 게시하세요.</p>
+    <div class="results-meta" id="resultsMeta"></div>
+  </div>
+  <div class="content-grid" id="contentGrid"></div>
+</section>
+
+<footer>K-FOOD AI MARKETING &nbsp;·&nbsp; 2026 Global Initiative Project</footer>
+
+<script>
+let selectedCountry = '';
+let selectedCountryLabel = '';
+let activeTags = [];
+let platformSelections = {};
+
+// ─── Content Database ───────────────────────────────────────────────────────
+const contentDB = {
+  'K-DRAMA': {
+    emoji: '🎬',
+    label: 'K-DRAMA 연계',
+    captions: {
+      Korea:     '드라마 속 그 장면, 이제 내 식탁에서! ✨ 주인공처럼 즐기는 {product}의 특별한 맛.',
+      USA:       'Your favorite K-Drama moments, now on your table. {product} — taste the story.',
+      UAE:       '{product} — inspired by the flavors of Korean drama culture. Now available near you.',
+      Indonesia: 'Rasakan cita rasa Korea seperti di drama favorit Anda dengan {product}!',
+      Europe:    '{product} — the taste behind every iconic K-Drama scene. Discover the culture.',
+      Japan:     'K-ドラマの主人公と同じ食卓へ。{product}で韓国の味を体験しよう。',
+    },
+    hashtags: {
+      Instagram: '#KDrama #KFood #Korean #KoreanFood #DraamaFood #K드라마 #{productTag} #Foodie #KoreanCuisine',
+      TikTok:    '#kdrama #kfood #fyp #koreanfood #kdramafood #{productTag} #viral #korean',
+      YouTube:   '#KDrama #KoreanFood #KFoodReview #{productTag} #KoreanCuisine #FoodVlog',
+      Twitter:   '#KDrama #KFood #{productTag} #Korean',
+    },
+  },
+  'K-POP': {
+    emoji: '🎵',
+    label: 'K-POP 연계',
+    captions: {
+      Korea:     'K-POP 에너지를 그대로! 아이돌이 즐기는 {product}로 무대 위 퍼포먼스를 충전하세요.',
+      USA:       'Fuel your fandom with {product} — the taste that powers K-Pop idols.',
+      UAE:       'K-Pop stars love it. Now you can too. {product} — energy for your next fandom moment.',
+      Indonesia: 'Seperti idol K-Pop favorit Anda! {product} memberikan energi untuk semua aktivitas.',
+      Europe:    '{product} — the authentic Korean taste fuelling the global K-Pop phenomenon.',
+      Japan:     'K-POPアイドルも愛する韓国の味。{product}でエネルギーをチャージしよう！',
+    },
+    hashtags: {
+      Instagram: '#KPOP #KFood #Korean #Idol #KPopFood #{productTag} #Fandom #KoreanCuisine',
+      TikTok:    '#kpop #kfood #fyp #idol #koreanfood #{productTag} #fandom #trending',
+      YouTube:   '#KPOP #KoreanFood #{productTag} #KPopFood #FoodReview #Unboxing',
+      Twitter:   '#KPOP #KFood #{productTag} #Korean #Fandom',
+    },
+  },
+  'K-BEAUTY': {
+    emoji: '✨',
+    label: 'K-BEAUTY 연계',
+    captions: {
+      Korea:     '빛나는 피부의 시작, {product}. 먹는 뷰티로 안팎을 모두 가꾸세요.',
+      USA:       'Eat beautiful. {product} — the K-Beauty secret you can taste.',
+      UAE:       '{product} — nourish your glow from the inside. The Korean beauty secret in every bite.',
+      Indonesia: 'Kulit glowing dari dalam! {product} — rahasia kecantikan Korea dalam setiap suapan.',
+      Europe:    '{product} — the Korean beauty philosophy applied to what you eat. Glow naturally.',
+      Japan:     '美しさは食から。{product}で韓国式インナービューティーを実践しよう。',
+    },
+    hashtags: {
+      Instagram: '#KBeauty #GlowingFood #KFood #{productTag} #InnerBeauty #Korean #HealthyEating',
+      TikTok:    '#kbeauty #kfood #glowup #fyp #{productTag} #skincare #koreanfood',
+      YouTube:   '#KBeauty #KoreanFood #{productTag} #InnerBeauty #GlowFood #Review',
+      Twitter:   '#KBeauty #KFood #{productTag} #Glow #Korean',
+    },
+  },
+  'K-WEBTOON': {
+    emoji: '📱',
+    label: 'K-WEBTOON 연계',
+    captions: {
+      Korea:     '웹툰 속 그 음식이 현실로! {product}와 함께하는 나만의 힐링 타임.',
+      USA:       'From the panels to your plate. {product} — the food of K-Webtoon heroes.',
+      UAE:       '{product} — inspired by the stories that captivated millions. Real Korean taste.',
+      Indonesia: 'Seperti di webtoon favorit Anda! {product} hadir di kehidupan nyata.',
+      Europe:    '{product} — bringing the flavors of Korean storytelling to your everyday life.',
+      Japan:     'ウェブトゥーンの世界から飛び出した味。{product}で非日常のひとときを。',
+    },
+    hashtags: {
+      Instagram: '#KWebtoon #KFood #Manhwa #{productTag} #Korean #Webtoon #ComicFood',
+      TikTok:    '#kwebtoon #manhwa #kfood #fyp #{productTag} #webtoon #koreanfood',
+      YouTube:   '#KWebtoon #Manhwa #KFood #{productTag} #AnimeFoodReview',
+      Twitter:   '#KWebtoon #Manhwa #{productTag} #KFood',
+    },
+  },
+  'K-SPORTS': {
+    emoji: '⚽',
+    label: 'K-SPORTS 연계',
+    captions: {
+      Korea:     '대한민국 선수들의 힘의 원천, {product}! 챔피언처럼 먹고, 챔피언처럼 움직이세요.',
+      USA:       'Train like a Korean champion. {product} — the fuel behind elite K-Sports performance.',
+      UAE:       '{product} — the performance nutrition powering Korea\'s top athletes worldwide.',
+      Indonesia: 'Makan seperti atlet Korea! {product} untuk performa terbaik setiap hari.',
+      Europe:    '{product} — the high-performance food choice of Korean sports champions.',
+      Japan:     '韓国トップアスリートの食卓から。{product}でパフォーマンスを高めよう。',
+    },
+    hashtags: {
+      Instagram: '#KSports #KFood #FitFood #{productTag} #Korean #AthleteFood #Performance',
+      TikTok:    '#ksports #kfood #fitfood #fyp #{productTag} #athlete #koreanfood',
+      YouTube:   '#KSports #KoreanFood #{productTag} #AthleteFood #FitFoodReview',
+      Twitter:   '#KSports #KFood #{productTag} #Fitness #Korean',
+    },
+  },
+  'K-FOOD': {
+    emoji: '🍜',
+    label: 'K-FOOD 글로벌',
+    captions: {
+      Korea:     '한국인의 맛, 세계가 반한 {product}. 전통과 현대가 만나는 가장 한국적인 미식 경험.',
+      USA:       '{product} — the authentic Korean taste taking the world by storm. Experience it now.',
+      UAE:       'The world is falling in love with Korean food. {product} — discover why.',
+      Indonesia: '{product} — cita rasa Korea yang sedang menjadi tren di seluruh dunia!',
+      Europe:    '{product} — authentically Korean, globally loved. The food trend you can\'t ignore.',
+      Japan:     '世界が熱狂する韓国の味。{product}で本場韓国フードを体験しよう。',
+    },
+    hashtags: {
+      Instagram: '#KFood #KoreanFood #GlobalKFood #{productTag} #Korean #FoodTrend #Authentic',
+      TikTok:    '#kfood #koreanfood #fyp #{productTag} #foodtrend #viral #authentic',
+      YouTube:   '#KFood #KoreanFood #{productTag} #GlobalFood #FoodReview #Authentic',
+      Twitter:   '#KFood #KoreanFood #{productTag} #GlobalFood',
+    },
+  },
+};
+
+const platforms = ['Instagram','TikTok','YouTube','Twitter'];
+const platformColors = { Instagram:'p-instagram', TikTok:'p-tiktok', YouTube:'p-youtube', Twitter:'p-twitter' };
+
+// ─── Step Logic ──────────────────────────────────────────────────────────────
+function selectCountry(el, country, label) {
+  document.querySelectorAll('.country-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCountry = country;
+  selectedCountryLabel = label;
+  setBadge('badge1', '완료', '#10B981');
+  document.getElementById('step1Card').classList.remove('active-step');
+  activateStep('step2Card', 'badge2');
+  setTimeout(() => {
+    document.getElementById('step2Card').scrollIntoView({behavior:'smooth',block:'center'});
+    document.getElementById('pName').focus();
+  }, 80);
+}
+
+function checkStep2() {
+  const ok = document.getElementById('pName').value.trim().length > 0;
+  const btn = document.getElementById('btnStep2');
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '0.4';
+}
+
+function completeStep2() {
+  setBadge('badge2', '완료', '#10B981');
+  document.getElementById('step2Card').classList.remove('active-step');
+  document.getElementById('btnStep2').style.display = 'none';
+  activateStep('step3Card', 'badge3');
+  setTimeout(() => {
+    document.getElementById('step3Card').scrollIntoView({behavior:'smooth',block:'center'});
+  }, 80);
+}
+
+function toggleTag(el, tag) {
+  el.classList.toggle('on');
+  if (el.classList.contains('on')) {
+    if (!activeTags.includes(tag)) activeTags.push(tag);
+  } else {
+    activeTags = activeTags.filter(t => t !== tag);
+  }
+  const wrap = document.getElementById('finalActionWrap');
+  if (activeTags.length > 0) {
+    wrap.classList.add('show');
+    setTimeout(() => wrap.scrollIntoView({behavior:'smooth',block:'nearest'}), 80);
+  } else {
+    wrap.classList.remove('show');
+  }
+}
+
+function activateStep(cardId, badgeId) {
+  const card = document.getElementById(cardId);
+  card.classList.remove('disabled-step');
+  card.classList.add('active-step');
+  const badge = document.getElementById(badgeId);
+  badge.textContent = '진행중';
+  badge.style.background = 'var(--primary-bg)';
+  badge.style.color = '#fff';
+}
+
+function setBadge(id, text, color) {
+  const b = document.getElementById(id);
+  b.textContent = text;
+  b.style.background = color;
+  b.style.color = '#fff';
+}
+
+// ─── Content Generation ──────────────────────────────────────────────────────
+function generateContent() {
+  const productName = document.getElementById('pName').value.trim();
+  const productTag = productName.replace(/\s+/g,'').replace(/[^a-zA-Z가-힣]/g,'');
+  const section = document.getElementById('resultsSection');
+  const grid = document.getElementById('contentGrid');
+  const meta = document.getElementById('resultsMeta');
+
+  // Show loading
+  section.className = 'results-section active';
+  grid.innerHTML = `<div class="loading-grid">${activeTags.map(()=>'<div class="shimmer"></div>').join('')}</div>`;
+  section.scrollIntoView({behavior:'smooth', block:'start'});
+
+  meta.textContent = '';
+
+  setTimeout(() => {
+    meta.innerHTML = `✅ ${selectedCountryLabel} 시장 &nbsp;·&nbsp; 📦 ${productName} &nbsp;·&nbsp; 🎯 ${activeTags.join(', ')}`;
+
+    grid.innerHTML = activeTags.map((tag, i) => {
+      const db = contentDB[tag];
+      if (!db) return '';
+      const caption = (db.captions[selectedCountry] || db.captions['USA'])
+        .replace('{product}', productName);
+      const hashtags = db.hashtags['Instagram']
+        .replace('{productTag}', productTag);
+      platformSelections[i] = 'Instagram';
+
+      return `
+        <div class="content-card">
+          <div class="content-img-wrap">
+            <div class="content-img-placeholder">${db.emoji}</div>
+            <div class="content-img-badge">${db.label}</div>
+          </div>
+          <div class="content-body">
+            <div class="content-initiative">${db.emoji} ${tag} 마케팅</div>
+            <p class="content-caption">${caption}</p>
+            <div class="platform-tabs">
+              ${platforms.map(p => `<div class="ptab${p==='Instagram'?' active':''}" onclick="switchPlatform(this,${i},'${p}','${productTag}')">${p}</div>`).join('')}
+            </div>
+            <div class="hashtag-area" id="hashtag-${i}">${hashtags}</div>
+            <div class="action-row">
+              <button class="act-copy" onclick="copyHashtag(this,${i})">📋 복사</button>
+              <button class="act-platform p-instagram" id="platform-btn-${i}-Instagram" onclick="openPlatform('Instagram','${encodeURIComponent(caption)}','${productTag}')">
+                📸 Instagram
+              </button>
+              <button class="act-platform p-tiktok" id="platform-btn-${i}-TikTok" onclick="openPlatform('TikTok','${encodeURIComponent(caption)}','${productTag}')">
+                🎵 TikTok
+              </button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }, 1200);
+}
+
+function switchPlatform(el, cardIdx, platform, productTag) {
+  const card = el.closest('.content-card');
+  card.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  platformSelections[cardIdx] = platform;
+
+  // Find the tag for this card
+  const tag = activeTags[cardIdx];
+  const db = contentDB[tag];
+  const htEl = document.getElementById(`hashtag-${cardIdx}`);
+  if (db && htEl) {
+    const ht = (db.hashtags[platform] || db.hashtags['Instagram'])
+      .replace('{productTag}', productTag);
+    htEl.textContent = ht;
+  }
+}
+
+function copyHashtag(btn, idx) {
+  const text = document.getElementById(`hashtag-${idx}`).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ 복사됨';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 복사'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function openPlatform(platform, caption, tag) {
+  const urls = {
+    Instagram: `https://www.instagram.com/`,
+    TikTok:    `https://www.tiktok.com/upload`,
+    YouTube:   `https://studio.youtube.com/`,
+    Twitter:   `https://twitter.com/intent/tweet?text=${caption}%20%23${tag}`,
+  };
+  window.open(urls[platform] || '#', '_blank');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}주가 분석{% endblock %}
+{% block nav_stocks %}active{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="hero-label">TECHNICAL ANALYSIS</div>
+    <h1>주가 기술적 분석</h1>
+    <p>EMA · RSI · MACD · ADX 지표로 매매 시점을 파악하세요</p>
+    <form method="GET" action="" style="margin-top:28px;">
+      <div style="display:flex;gap:12px;max-width:480px;">
+        <input type="text" name="symbol" value="{{ query }}" placeholder="종목 코드 입력 (예: AAPL, 005930.KS)"
+          style="flex:1;padding:14px 20px;border-radius:12px;border:none;font-size:15px;background:rgba(255,255,255,.12);color:#fff;backdrop-filter:blur(10px);"
+          onkeydown="if(event.key==='Enter'){window.location='/stocks/'+this.value.toUpperCase().trim()+'/';}">
+        <button type="button" onclick="var s=document.querySelector('[name=symbol]').value.trim().toUpperCase();if(s)window.location='/stocks/'+s+'/';"
+          class="btn-primary-fh" style="padding:14px 24px;flex-shrink:0;">분석 <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="container py-5">
+  <h2 style="font-size:20px;font-weight:800;margin-bottom:20px;">인기 종목</h2>
+  <div class="row g-3">
+    {% for s in popular %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="/stocks/{{ s.symbol }}/">
+        <div class="card-fh">
+          <div class="card-fh-body">
+            <div style="font-size:24px;margin-bottom:8px;">{{ s.flag }}</div>
+            <div style="font-weight:800;font-size:16px;">{{ s.symbol }}</div>
+            <div style="font-size:13px;color:var(--text-3);">{{ s.name }}</div>
+            <div style="margin-top:12px;font-size:12px;color:var(--primary);font-weight:600;">분석하기 <i class="bi bi-arrow-right"></i></div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="card-fh mt-5">
+    <div class="card-fh-body">
+      <h5 style="font-weight:800;margin-bottom:16px;"><i class="bi bi-info-circle me-2" style="color:var(--primary)"></i>지표 안내</h5>
+      <div class="row g-3">
+        <div class="col-md-3"><div style="font-weight:700;margin-bottom:4px;">📈 EMA (지수이동평균)</div><div style="font-size:13px;color:var(--text-3);">단기(10)·중기(20)·장기(50) 이평선 크로스로 추세 방향을 확인합니다.</div></div>
+        <div class="col-md-3"><div style="font-weight:700;margin-bottom:4px;">⚡ ADX (추세 강도)</div><div style="font-size:13px;color:var(--text-3);">25 이상이면 강한 추세, 25 미만이면 약한 추세 또는 횡보로 판단합니다.</div></div>
+        <div class="col-md-3"><div style="font-weight:700;margin-bottom:4px;">🔄 RSI (상대강도지수)</div><div style="font-size:13px;color:var(--text-3);">70 이상 과매수, 30 이하 과매도 구간으로 매매 시점 보조 지표입니다.</div></div>
+        <div class="col-md-3"><div style="font-weight:700;margin-bottom:4px;">📊 MACD</div><div style="font-size:13px;color:var(--text-3);">골든크로스·데드크로스로 추세 전환 시점을 포착합니다.</div></div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-3);text-align:center;margin-top:16px;">⚠ 본 분석은 참고용이며, 실제 투자 결정에는 활용하지 마세요. 투자 원금 손실 위험이 있습니다.</p>
+</div>
+{% endblock %}

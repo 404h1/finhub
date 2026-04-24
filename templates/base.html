@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FinHub{% endblock %} | FinHub</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="fh-nav">
+  <div class="container">
+    <a href="/" class="fh-logo">
+      <span class="fh-logo-dot"></span>FinHub
+    </a>
+    <div class="fh-nav-links">
+      <a href="/products/" class="fh-nav-link {% block nav_products %}{% endblock %}">금융상품</a>
+      <a href="/stocks/" class="fh-nav-link {% block nav_stocks %}{% endblock %}">주가분석</a>
+      <a href="/boards/" class="fh-nav-link {% block nav_boards %}{% endblock %}">투자토론</a>
+      {% if request.user.is_authenticated %}
+      <a href="/accounts/" class="fh-nav-link {% block nav_users %}{% endblock %}">멤버</a>
+      {% endif %}
+    </div>
+    <div class="fh-nav-actions">
+      {% if request.user.is_authenticated %}
+        <a href="/accounts/profile/" class="fh-nav-link d-flex align-items-center gap-2">
+          {% if request.user.profile_image %}
+            <img src="{{ request.user.profile_image.url }}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+          {% else %}
+            <span style="width:28px;height:28px;border-radius:50%;background:var(--primary);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;">{{ request.user.get_display_name|first|upper }}</span>
+          {% endif %}
+          <span style="font-size:14px;font-weight:600;color:var(--text-1);">{{ request.user.get_display_name }}</span>
+        </a>
+        <form method="POST" action="/accounts/logout/" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-ghost-fh">로그아웃</button>
+        </form>
+      {% else %}
+        <a href="/accounts/login/" class="btn-outline-fh" style="padding:8px 18px;font-size:13px;">로그인</a>
+        <a href="/accounts/signup/" class="btn-primary-fh" style="padding:8px 18px;font-size:13px;">시작하기</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<!-- Messages -->
+{% if messages %}
+<div class="fh-messages">
+  {% for msg in messages %}
+  <div class="fh-msg {% if msg.tags == 'success' %}success{% elif msg.tags == 'error' %}error{% elif msg.tags == 'warning' %}warning{% endif %}">
+    {% if msg.tags == 'success' %}<i class="bi bi-check-circle-fill" style="color:var(--success)"></i>
+    {% elif msg.tags == 'error' %}<i class="bi bi-x-circle-fill" style="color:var(--danger)"></i>
+    {% elif msg.tags == 'warning' %}<i class="bi bi-exclamation-triangle-fill" style="color:var(--warning)"></i>
+    {% else %}<i class="bi bi-info-circle-fill" style="color:var(--primary)"></i>{% endif %}
+    {{ msg }}
+  </div>
+  {% endfor %}
+</div>
+<script>setTimeout(()=>{document.querySelectorAll('.fh-msg').forEach(e=>{e.style.transition='opacity .4s';e.style.opacity='0';})},3500);</script>
+{% endif %}
+
+<!-- Content -->
+{% block content %}{% endblock %}
+
+<!-- Footer -->
+<footer class="fh-footer">
+  <div class="container">
+    <div class="row g-4 pb-4" style="border-bottom:1px solid rgba(255,255,255,.08);">
+      <div class="col-md-4">
+        <div class="fh-footer-logo"><span class="fh-logo-dot" style="background:#3B82F6;"></span> FinHub</div>
+        <div style="font-size:14px;line-height:1.7;max-width:260px;">금융 정보를 한 곳에서 — 상품 조회, 주가 분석, 투자 토론까지.</div>
+      </div>
+      <div class="col-md-2">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;letter-spacing:.08em;text-transform:uppercase;">서비스</div>
+        <div class="d-flex flex-column gap-2">
+          <a href="/products/">금융상품</a>
+          <a href="/stocks/">주가분석</a>
+          <a href="/boards/">투자토론</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;letter-spacing:.08em;text-transform:uppercase;">데이터 출처</div>
+        <div class="d-flex flex-column gap-2">
+          <a href="https://finlife.fss.or.kr" target="_blank">금융감독원 금융상품통합비교공시</a>
+          <a href="https://finance.yahoo.com" target="_blank">Yahoo Finance</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;letter-spacing:.08em;text-transform:uppercase;">유의사항</div>
+        <div style="font-size:13px;line-height:1.7;">⚠ 본 서비스는 교육 목적으로 제공됩니다. 실제 투자 판단에 사용하지 마세요.</div>
+      </div>
+    </div>
+    <div style="padding-top:24px;font-size:12px;color:rgba(255,255,255,.25);">© 2026 FinHub. 교육용 프로젝트.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

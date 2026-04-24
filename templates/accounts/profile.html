@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}프로필{% endblock %}
+{% block nav_users %}{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="hero-label">MY PROFILE</div>
+    <h1>내 프로필</h1>
+    <p>투자 성향과 포트폴리오를 관리하세요</p>
+  </div>
+</div>
+<div class="container py-5">
+  <div class="row g-4">
+    <!-- 기본 정보 -->
+    <div class="col-lg-4">
+      <div class="card-fh">
+        <div class="card-fh-body text-center">
+          <div class="avatar-wrap mb-3">
+            {% if profile_user.profile_image %}
+              <img src="{{ profile_user.profile_image.url }}" class="avatar-img" style="width:96px;height:96px;">
+            {% else %}
+              <div class="avatar-placeholder" style="width:96px;height:96px;margin:0 auto;">{{ profile_user.get_display_name|first|upper }}</div>
+            {% endif %}
+          </div>
+          <h3 style="font-size:22px;font-weight:800;margin-bottom:4px;">{{ profile_user.get_display_name }}</h3>
+          <div style="font-size:13px;color:var(--text-3);margin-bottom:16px;">@{{ profile_user.username }}</div>
+          {% if profile_user.bio %}
+          <p style="font-size:14px;color:var(--text-2);padding:12px;background:var(--surface-2);border-radius:var(--radius);text-align:left;">{{ profile_user.bio }}</p>
+          {% endif %}
+          <div class="divider"></div>
+          <div class="inv-pill justify-content-center">
+            <i class="bi bi-lightning-charge-fill"></i>
+            {{ profile_user.get_investment_style_display }}
+          </div>
+          <div class="d-flex gap-2 mt-3 justify-content-center flex-wrap">
+            <a href="/accounts/profile/edit/" class="btn-primary-fh" style="font-size:13px;padding:8px 16px;">프로필 수정</a>
+            <a href="/accounts/password/" class="btn-ghost-fh" style="font-size:13px;padding:8px 16px;">비밀번호 변경</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 상세 정보 -->
+    <div class="col-lg-8">
+      <div class="card-fh mb-4">
+        <div class="card-fh-header">기본 정보</div>
+        <div class="card-fh-body">
+          <div class="row g-3">
+            <div class="col-6"><div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">아이디</div><div style="font-weight:600;">{{ profile_user.username }}</div></div>
+            <div class="col-6"><div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">이메일</div><div style="font-weight:600;">{{ profile_user.email|default:'-' }}</div></div>
+            <div class="col-6"><div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">나이</div><div style="font-weight:600;">{{ profile_user.age|default:'-' }}{% if profile_user.age %}세{% endif %}</div></div>
+            <div class="col-6"><div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">가입일</div><div style="font-weight:600;">{{ profile_user.date_joined|date:"Y.m.d" }}</div></div>
+            {% if profile_user.assets %}<div class="col-6"><div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">자산</div><div style="font-weight:600;">{{ profile_user.assets|floatformat:0 }}원</div></div>{% endif %}
+            {% if profile_user.salary %}<div class="col-6"><div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">연봉</div><div style="font-weight:600;">{{ profile_user.salary|floatformat:0 }}원</div></div>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="card-fh mb-4">
+        <div class="card-fh-header">투자 포트폴리오</div>
+        <div class="card-fh-body">
+          <div class="row g-3">
+            <div class="col-6"><div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">저축 성향</div><div style="font-weight:600;">{{ profile_user.get_saving_style_display|default:'-' }}</div></div>
+            <div class="col-6"><div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">최애 은행</div><div style="font-weight:600;">{{ profile_user.favorite_bank|default:'-' }}</div></div>
+            {% if profile_user.interest_stocks %}
+            <div class="col-12">
+              <div style="font-size:12px;color:var(--text-3);margin-bottom:8px;">관심 종목</div>
+              <div class="d-flex gap-2 flex-wrap">
+                {% for s in profile_user.interest_stocks.split(',') %}
+                <span class="tag">{{ s|trim }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- 내 게시글 -->
+      <div class="card-fh">
+        <div class="card-fh-header">최근 게시글</div>
+        {% with posts=profile_user.posts.all|slice:":5" %}
+        {% if posts %}
+          {% for post in posts %}
+          <div class="post-row">
+            <a href="/boards/{{ post.asset_id }}/{{ post.pk }}/" class="post-title-link">{{ post.title }}</a>
+            <span class="post-meta">{{ post.created_at|date:"m.d" }}</span>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="card-fh-body" style="color:var(--text-3);font-size:14px;">아직 작성한 게시글이 없습니다.</div>
+        {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

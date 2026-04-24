@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}투자 토론{% endblock %}
+{% block nav_boards %}active{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="hero-label">DISCUSSION BOARD</div>
+    <h1>투자 토론</h1>
+    <p>자산별 게시판에서 다른 투자자들과 인사이트를 나눠보세요</p>
+  </div>
+</div>
+<div class="container py-5">
+  <div class="row g-3">
+    {% for a in assets %}
+    <div class="col-md-6 col-lg-4">
+      <a href="/boards/{{ a.id }}/">
+        <div class="card-fh">
+          <div class="card-fh-body">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+              <div>
+                <span class="badge-fh {% if a.type == '주식' %}badge-blue{% elif a.type == '코인' %}badge-purple{% else %}badge-green{% endif %} mb-2">{{ a.type }}</span>
+                <h3 style="font-size:18px;font-weight:800;margin-bottom:4px;">{{ a.name }}</h3>
+                <div style="font-size:12px;color:var(--text-3);">{{ a.code }}</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:24px;font-weight:900;color:var(--primary);">{{ a.post_count }}</div>
+                <div style="font-size:11px;color:var(--text-3);">게시글</div>
+              </div>
+            </div>
+            <p style="font-size:13px;color:var(--text-3);line-height:1.6;margin-bottom:12px;">{{ a.desc }}</p>
+            <div style="font-size:13px;color:var(--primary);font-weight:600;">게시판 보기 <i class="bi bi-arrow-right"></i></div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
